@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Setter
@@ -14,9 +15,11 @@ public class Masters {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long masterId;
+    private Long id;
 
-    private long userId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    private Users userId;
 
     private String masterName;
 
@@ -27,5 +30,14 @@ public class Masters {
     private int experience;
 
     private boolean objectStatus;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "masterId")
+    private List<Reviews> reviews;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "masterId")
+    private List<Portfolio> portfolios;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "masterId")
+    private Ratings ratings;
 
 }
