@@ -12,7 +12,8 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Users {
+@Table(name = "users")
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,15 +24,9 @@ public class Users {
 
     private String avatar;
 
-    private boolean objectStatus;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Masters masters;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Contacts contacts;
+    private String lastUpdate;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private List<Reviews> reviews;
+    private List<ReviewEntity> reviews;
 
 }

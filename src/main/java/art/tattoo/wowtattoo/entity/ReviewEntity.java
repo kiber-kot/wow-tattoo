@@ -10,17 +10,22 @@ import javax.persistence.*;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Portfolio {
+@Table(name = "review")
+public class ReviewEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn
-    private Masters masterId;
+    @JoinColumn(name = "user_id")
+    private UserEntity userId;
 
-    private String imageLink;
-    private boolean objectStatus;
+    @ManyToOne
+    @JoinColumn(name = "master_id")
+    private MasterEntity masterId;
+
+    private String dataTime;
+    private String reviewText;
 
 }

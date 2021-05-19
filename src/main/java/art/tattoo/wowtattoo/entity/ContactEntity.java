@@ -10,7 +10,8 @@ import javax.persistence.*;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Contacts {
+@Table(name = "contact")
+public class ContactEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +23,9 @@ public class Contacts {
     private String instagram;
     private String whatsApp;
     private String email;
-    private boolean objectStatus;
+    private String faceBook;
 
     @OneToOne
-    @JoinColumn
-    private Users userId;
+    @JoinColumn(name = "master_id")
+    private MasterEntity masterId;
 }

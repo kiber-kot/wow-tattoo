@@ -10,21 +10,16 @@ import javax.persistence.*;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Reviews {
+@Table(name = "rating")
+public class RatingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn
-    private Users userId;
+    @JoinColumn(name = "master_id")
+    @OneToOne
+    private MasterEntity masterId;
 
-    @ManyToOne
-    @JoinColumn
-    private Masters masterId;
-
-    private String dataTime;
-    private String reviewText;
-    private boolean objectStatus;
+    private double rating;
 }

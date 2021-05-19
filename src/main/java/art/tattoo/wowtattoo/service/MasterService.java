@@ -1,14 +1,15 @@
 package art.tattoo.wowtattoo.service;
 
-import art.tattoo.wowtattoo.entity.Masters;
+import art.tattoo.wowtattoo.entity.MasterEntity;
+import art.tattoo.wowtattoo.exeption.MasterNotFoundException;
 
 import java.util.List;
 
 public interface MasterService {
 
-    Masters getMaster(long id);
+    MasterEntity getMaster(long id) throws MasterNotFoundException;
 
-    List<Masters> getAllMasters();
+    List<MasterEntity> getAllMasters();
 
-    void saveMaster(Masters masters);
+    void saveMaster(MasterEntity masterEntity);
 }

@@ -7,37 +7,35 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+
 @Setter
 @Getter
 @NoArgsConstructor
-public class Masters {
+@Entity
+@Table(name = "master")
+public class MasterEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
-    private Users userId;
-
     private String masterName;
 
     private String description;
 
-    private boolean rating;
-
     private int experience;
 
-    private boolean objectStatus;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "masterId")
-    private List<Reviews> reviews;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "masterId")
-    private List<Portfolio> portfolios;
+    private String avatar;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "masterId")
-    private Ratings ratings;
+    private RatingEntity rating;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "masterId")
+    private List<ReviewEntity> reviews;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "masterId")
+    private List<PortfolioEntity> portfolioEntities;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "masterId")
+    private ContactEntity contact;
 }

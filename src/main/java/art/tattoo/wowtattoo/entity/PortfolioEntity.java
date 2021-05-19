@@ -10,13 +10,17 @@ import javax.persistence.*;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Ratings {
+@Table(name = "portfolio")
+public class PortfolioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn
-    @OneToOne
-    private Masters masterId;
+    @ManyToOne
+    @JoinColumn(name = "master_id")
+    private MasterEntity masterId;
+
+    private String imageLink;
+
 }
