@@ -32,12 +32,13 @@ public class MasterPageController {
 
     @GetMapping("/master/{id}")
     public MasterDTO getOneMaster(@PathVariable long id){
-        MasterDTO masterDTO = new MasterDTO();
+        MasterEntity masterEntity = new MasterEntity();
         try {
-//            return ResponseEntity.ok(masterService.getMaster(id));
-            return MasterDTO.toMasterDTO(masterService.getMaster(id));
+            masterEntity = masterService.getMaster(id);
+            return MasterDTO.toMasterDTO(masterEntity);
+//            return MasterDTO.toMasterDTO(masterService.getMaster(id));
         }  catch (Exception e){
-            return masterDTO;
+            return MasterDTO.toMasterDTO(masterEntity);
         }
     }
 

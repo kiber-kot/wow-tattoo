@@ -34,7 +34,7 @@ public class MasterEntity {
     private List<ReviewEntity> reviews;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "masterId")
-    private List<PortfolioEntity> portfolioEntities;
+    private List<PortfolioEntity> portfolio;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "masterId")
     private ContactEntity contact;
