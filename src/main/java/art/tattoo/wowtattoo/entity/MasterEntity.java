@@ -38,4 +38,7 @@ public class MasterEntity {
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "masterId")
     private ContactEntity contact;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "masterId")
+    private List<StyleEntity> style;
 }
