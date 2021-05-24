@@ -18,8 +18,8 @@ public class StyleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Styles styles;
+    @Enumerated(EnumType.ORDINAL)
+    private Styles style;
 
     @ManyToOne
     @JoinColumn(name = "master_id")

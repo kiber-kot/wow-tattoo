@@ -1,22 +1,17 @@
 package art.tattoo.wowtattoo.attributes;
 
+
 public enum Styles {
-    Etching("Гравюра"),
-    Bioorganics("Био-органика"),
-    Minimalism("Минимализм"),
-    ThumbnailImage("Миниатюра"),
-    Linework("Лайнворк");
+    Etching,
+    Bioorganics,
+    Minimalism,
+    ThumbnailImage,
+    Linework;
 
 
-    private String style;
-
-    Styles(String style){
-        this.style = style;
+    Styles(){
     }
 
-    @Override
-    public String toString() {
-        return style;
-    }
+
 }
 

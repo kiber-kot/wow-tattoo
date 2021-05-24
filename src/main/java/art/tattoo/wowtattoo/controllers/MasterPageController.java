@@ -33,12 +33,13 @@ public class MasterPageController {
 
     @GetMapping("/master/{id}")
     public MasterDto getOneMaster(@PathVariable long id){
-        MasterEntity masterEntity = new MasterEntity();
+//        MasterEntity masterEntity = new MasterEntity();
+        MasterDto masterDto = new MasterDto();
         try {
-            masterEntity = masterService.getMaster(id);
-            return masterMapper.toDto(masterEntity);
+            masterDto = masterService.getMaster(id);
+            return masterDto;
         }  catch (Exception e){
-            return masterMapper.toDto(masterEntity);
+            return masterDto;
         }
     }
 

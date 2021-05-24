@@ -28,6 +28,8 @@ public class MasterDto {
 
     private List<PortfolioDto> portfolio;
 
+    private List<StyleDto> style;
+
     private ContactDto contact;
 
 }
