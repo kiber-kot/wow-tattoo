@@ -41,7 +41,12 @@ public class MasterServiceImpl implements MasterService {
     }
 
     @Override
-    public void saveMaster(MasterEntity masterEntity) {
-        masterRepository.save(masterEntity);
+    public MasterDto saveMaster(MasterEntity masterEntity) throws MasterNotFoundException {
+        if(masterRepository.findById(masterEntity.getId()).isEmpty()){
+            throw new MasterNotFoundException("Мастер не найден");
+        }
+        MasterEntity masterEntity1 = masterRepository.save(masterEntity);
+        MasterDto masterDto = masterMapper.toDto(masterEntity1);
+        return masterDto;
     }
 }

@@ -3,6 +3,7 @@ package art.tattoo.wowtattoo.controllers;
 
 import art.tattoo.wowtattoo.dto.MasterDto;
 import art.tattoo.wowtattoo.entity.MasterEntity;
+import art.tattoo.wowtattoo.exeption.MasterNotFoundException;
 import art.tattoo.wowtattoo.mapping.MasterMapper;
 import art.tattoo.wowtattoo.service.MasterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,6 @@ public class MasterPageController {
     @Autowired
     private MasterService masterService;
 
-    @Autowired
-    private MasterMapper masterMapper;
-
 
     @GetMapping("/status")
     public ResponseEntity checkServerStatus(){
@@ -33,7 +31,6 @@ public class MasterPageController {
 
     @GetMapping("/master/{id}")
     public MasterDto getOneMaster(@PathVariable long id){
-//        MasterEntity masterEntity = new MasterEntity();
         MasterDto masterDto = new MasterDto();
         try {
             masterDto = masterService.getMaster(id);
@@ -43,4 +40,16 @@ public class MasterPageController {
         }
     }
 
+    @PostMapping("/master")
+    public ResponseEntity<MasterDto> saveMaster(@RequestBody MasterEntity entity){
+        MasterDto masterDto = null;
+        try {
+            masterDto = masterService.saveMaster(entity);
+        } catch (MasterNotFoundException e){
+            ResponseEntity.badRequest().body(e);
+        } catch (Exception e){
+            ResponseEntity.badRequest().body(e);
+        }
+        return ResponseEntity.ok(masterDto);
+    }
 }

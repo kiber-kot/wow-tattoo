@@ -12,5 +12,5 @@ public interface MasterService {
 
     List<MasterEntity> getAllMasters();
 
-    void saveMaster(MasterEntity masterEntity);
+    MasterDto saveMaster(MasterEntity masterEntity) throws MasterNotFoundException;
 }
