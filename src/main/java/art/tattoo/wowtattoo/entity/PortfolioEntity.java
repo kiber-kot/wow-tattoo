@@ -21,7 +21,6 @@ public class PortfolioEntity {
     @JoinColumn(name = "master_id")
     private MasterEntity masterId;
 
-    @Lob
     private String imageLink;
 
 }
