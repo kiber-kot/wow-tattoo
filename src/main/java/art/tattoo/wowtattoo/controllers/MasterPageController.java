@@ -1,6 +1,7 @@
 package art.tattoo.wowtattoo.controllers;
 
 
+import art.tattoo.wowtattoo.dao.MasterRepository;
 import art.tattoo.wowtattoo.dto.MasterDto;
 import art.tattoo.wowtattoo.entity.MasterEntity;
 import art.tattoo.wowtattoo.exeption.MasterNotFoundException;
@@ -18,6 +19,11 @@ public class MasterPageController {
 
     @Autowired
     private MasterService masterService;
+
+    @Autowired
+    private MasterRepository masterRepository;
+    @Autowired
+    private MasterMapper masterMapper;
 
 
     @GetMapping("/status")
@@ -42,14 +48,9 @@ public class MasterPageController {
 
     @PostMapping("/master")
     public ResponseEntity<MasterDto> saveMaster(@RequestBody MasterEntity entity){
-        MasterDto masterDto = null;
-        try {
-            masterDto = masterService.saveMaster(entity);
-        } catch (MasterNotFoundException e){
-            ResponseEntity.badRequest().body(e);
-        } catch (Exception e){
-            ResponseEntity.badRequest().body(e);
-        }
+        MasterDto masterDto = masterMapper
+                .toDto(masterRepository
+                        .save(entity));
         return ResponseEntity.ok(masterDto);
     }
 }

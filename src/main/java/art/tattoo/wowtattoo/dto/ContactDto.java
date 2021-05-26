@@ -1,12 +1,8 @@
 package art.tattoo.wowtattoo.dto;
 
-import art.tattoo.wowtattoo.entity.MasterEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
 
 @NoArgsConstructor
@@ -31,4 +27,5 @@ public class ContactDto {
     private String faceBook;
 
     private Long masterId;
+
 }

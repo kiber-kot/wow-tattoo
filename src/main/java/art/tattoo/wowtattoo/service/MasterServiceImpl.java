@@ -45,8 +45,8 @@ public class MasterServiceImpl implements MasterService {
         if(masterRepository.findById(masterEntity.getId()).isEmpty()){
             throw new MasterNotFoundException("Мастер не найден");
         }
-        MasterEntity masterEntity1 = masterRepository.save(masterEntity);
-        MasterDto masterDto = masterMapper.toDto(masterEntity1);
+        masterEntity = masterRepository.save(masterEntity);
+        MasterDto masterDto = masterMapper.toDto(masterEntity);
         return masterDto;
     }
 }

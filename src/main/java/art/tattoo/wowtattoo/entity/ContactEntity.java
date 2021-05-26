@@ -1,5 +1,7 @@
 package art.tattoo.wowtattoo.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,4 +30,9 @@ public class ContactEntity {
     @OneToOne
     @JoinColumn(name = "master_id")
     private MasterEntity masterId;
+
+    @JsonCreator
+    public ContactEntity (@JsonProperty("master_id") Long masterId ) {
+        this.setId(masterId);
+    }
 }
