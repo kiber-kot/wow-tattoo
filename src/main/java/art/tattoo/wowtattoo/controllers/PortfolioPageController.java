@@ -9,13 +9,16 @@ import art.tattoo.wowtattoo.entity.PortfolioEntity;
 import art.tattoo.wowtattoo.mapping.PortfolioMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @RestController
+@Transactional
 @RequestMapping("api")
 public class PortfolioPageController {
 
@@ -28,7 +31,9 @@ public class PortfolioPageController {
 
 
     @PostMapping("/portfolio/{id}")
-    public ResponseEntity savePortfolio(@PathVariable long id, @RequestBody List<PortfolioEntity> entity){
+    public ResponseEntity savePortfolio(@PathVariable long id,
+                                        @Valid
+                                        @RequestBody List<PortfolioEntity> entity){
         MasterEntity masterEntity = masterRepository.findById(id).get();
         for(PortfolioEntity value: entity){
             value.setMasterId(masterEntity);

@@ -9,11 +9,14 @@ import art.tattoo.wowtattoo.mapping.MasterMapper;
 import art.tattoo.wowtattoo.service.MasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
 
 @RestController()
+@Transactional
 @RequestMapping("/api")
 public class MasterPageController {
 
@@ -47,7 +50,7 @@ public class MasterPageController {
     }
 
     @PostMapping("/master")
-    public ResponseEntity<MasterDto> saveMaster(@RequestBody MasterEntity entity){
+    public ResponseEntity<MasterDto> saveMaster(@Valid @RequestBody MasterEntity entity){
         MasterDto masterDto = masterMapper
                 .toDto(masterRepository
                         .save(entity));

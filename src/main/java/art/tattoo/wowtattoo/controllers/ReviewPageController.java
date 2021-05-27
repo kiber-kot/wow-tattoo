@@ -12,9 +12,13 @@ import art.tattoo.wowtattoo.mapping.ReviewMapper;
 import art.tattoo.wowtattoo.mapping.StyleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
+@Transactional
 @RequestMapping("/api")
 public class ReviewPageController {
     @Autowired
@@ -25,7 +29,9 @@ public class ReviewPageController {
     private MasterRepository masterRepository;
 
     @PostMapping("/review/{id}")
-    public ResponseEntity<ReviewDto> saveStyle(@PathVariable long id, @RequestBody ReviewEntity entity){
+    public ResponseEntity<ReviewDto> saveStyle(@PathVariable long id,
+                                               @Valid
+                                               @RequestBody ReviewEntity entity){
         MasterEntity masterEntity = masterRepository.findById(id).get();
         entity.setMasterId(masterEntity);
         ReviewDto reviewDto = reviewMapper

@@ -12,9 +12,13 @@ import art.tattoo.wowtattoo.mapping.RatingMapper;
 import art.tattoo.wowtattoo.mapping.StyleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
+@Transactional
 @RequestMapping("/api")
 public class RatingPageController {
     @Autowired
@@ -25,7 +29,9 @@ public class RatingPageController {
     private MasterRepository masterRepository;
 
     @PostMapping("/rating/{id}")
-    public ResponseEntity<RatingDto> saveStyle(@PathVariable long id, @RequestBody RatingEntity entity){
+    public ResponseEntity<RatingDto> saveStyle(@PathVariable long id,
+                                               @Valid
+                                               @RequestBody RatingEntity entity){
         MasterEntity masterEntity = masterRepository.findById(id).get();
         entity.setMasterId(masterEntity);
         RatingDto ratingDto = ratingMapper

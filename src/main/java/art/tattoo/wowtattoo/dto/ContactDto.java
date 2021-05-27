@@ -12,8 +12,6 @@ public class ContactDto {
 
     private Long id;
 
-    private String phoneCode;
-
     private String phoneNumber;
 
     private String telegram;

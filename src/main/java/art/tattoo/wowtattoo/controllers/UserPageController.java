@@ -12,20 +12,22 @@ import art.tattoo.wowtattoo.mapping.StyleMapper;
 import art.tattoo.wowtattoo.mapping.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
+@Transactional
 @RequestMapping("/api")
 public class UserPageController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private MasterRepository masterRepository;
 
     @PostMapping("/user")
-    public ResponseEntity<UserDto> saveStyle(@PathVariable long id, @RequestBody UserEntity entity){
+    public ResponseEntity<UserDto> saveStyle(@Valid @RequestBody UserEntity entity){
         UserDto userDto = userMapper
                 .toDto(userRepository
                         .save(entity));
