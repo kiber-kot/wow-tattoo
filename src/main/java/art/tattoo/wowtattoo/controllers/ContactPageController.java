@@ -36,4 +36,15 @@ public class ContactPageController {
                         .save(entity));
         return contactDto;
     }
+
+    @PutMapping("/contact/{id}")
+    public ContactDto updateContact(@PathVariable long id,
+                                    @Valid
+                                    @RequestBody ContactEntity entity){
+        MasterEntity masterEntity = masterRepository.findById(id).get();
+        entity.setMasterId(masterEntity);
+        return contactMapper
+                .toDto(contactRepository
+                        .save(entity));
+    }
 }
