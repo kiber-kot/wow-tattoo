@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @RestController
 @RequestMapping("api")
 public class PortfolioPageController {
@@ -24,12 +28,12 @@ public class PortfolioPageController {
 
 
     @PostMapping("/portfolio/{id}")
-    public ResponseEntity<PortfolioDto> savePortfolio(@PathVariable long id, @RequestBody PortfolioEntity entity){
+    public ResponseEntity savePortfolio(@PathVariable long id, @RequestBody List<PortfolioEntity> entity){
         MasterEntity masterEntity = masterRepository.findById(id).get();
-        entity.setMasterId(masterEntity);
-        PortfolioDto portfolioDto = portfolioMapper
-                .toDto(portfolioRepository
-                        .save(entity));
-        return ResponseEntity.ok(portfolioDto);
+        for(PortfolioEntity value: entity){
+            value.setMasterId(masterEntity);
+        }
+        portfolioRepository.saveAll(entity);
+        return ResponseEntity.ok().body("Записы добавлены");
     }
 }

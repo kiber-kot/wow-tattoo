@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class StylePageController {
@@ -26,12 +28,12 @@ public class StylePageController {
     private MasterRepository masterRepository;
 
     @PostMapping("/style/{id}")
-    public ResponseEntity<StyleDto> saveStyle(@PathVariable long id, @RequestBody StyleEntity entity){
+    public ResponseEntity saveStyle(@PathVariable long id, @RequestBody List<StyleEntity> entity){
         MasterEntity masterEntity = masterRepository.findById(id).get();
-        entity.setMasterId(masterEntity);
-        StyleDto styleDto = styleMapper
-                .toDto(styleRepository
-                        .save(entity));
-        return ResponseEntity.ok(styleDto);
+        for(StyleEntity value: entity){
+            value.setMasterId(masterEntity);
+        }
+        styleRepository.saveAll(entity);
+        return ResponseEntity.ok().body("Записы добавлены");
     }
 }
