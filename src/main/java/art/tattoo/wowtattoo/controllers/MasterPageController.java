@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController()
 @Transactional
@@ -75,6 +76,20 @@ public class MasterPageController {
                             .save(entity)));
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e);
+        }
+    }
+
+    @DeleteMapping("/master/{id}")
+    public ResponseEntity<?> deleteMaster(@PathVariable long id){
+        Optional<MasterEntity> masterEntity = masterRepository.findById(id);
+        try{
+            if(masterEntity.isEmpty()){
+                throw new MasterNotFoundException("Ошибка, пользолватель с id = '" + id + "' отсутствует в базе");
+            }
+            masterRepository.deleteById(id);
+            return ResponseEntity.ok().body("Пользователь с id = '" + id + "' удален");
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

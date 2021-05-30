@@ -15,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @Transactional
@@ -69,6 +66,39 @@ public class PortfolioPageController {
             return ResponseEntity.ok(portfolioMapper
                     .toDto(portfolioRepository
                             .save(entity)));
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/portfolio/{masterId}/{portfolioId}")
+    public ResponseEntity<?> deletePortfolio(@PathVariable long masterId, long portfolioId){
+        Optional<MasterEntity> masterEntity = masterRepository.findById(masterId);
+        try{
+            if(masterEntity.isEmpty()){
+                throw new MasterNotFoundException("Ошибка, пользолватель с id = '" + masterId + "' отсутствует в базе");
+            }
+            portfolioRepository.findById(portfolioId);
+            return ResponseEntity.ok().body("У пользователь с id = '" +
+                    masterId + "' удалена фотография с id = ' " + portfolioId);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/portfolio/{masterId}")
+    public ResponseEntity<?> deleteAllPortfolio(@PathVariable long masterId){
+        Optional<MasterEntity> masterEntity = masterRepository.findById(masterId);
+        try{
+            if(masterEntity.isEmpty()){
+                throw new MasterNotFoundException("Ошибка, пользолватель с id = '" + masterId + "' отсутствует в базе");
+            }
+            List<PortfolioEntity> list = portfolioRepository.findAllByMasterId(masterId);
+            for(PortfolioEntity value : list){
+                portfolioRepository.deleteById(value.getId());
+            }
+            return ResponseEntity.ok().body("У пользователь с id = '" +
+                    masterId + "' удалены все фотографии");
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
