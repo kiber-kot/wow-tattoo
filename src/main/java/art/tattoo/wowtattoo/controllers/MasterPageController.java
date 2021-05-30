@@ -3,6 +3,7 @@ package art.tattoo.wowtattoo.controllers;
 
 import art.tattoo.wowtattoo.dao.MasterRepository;
 import art.tattoo.wowtattoo.dto.MasterDto;
+import art.tattoo.wowtattoo.entity.ContactEntity;
 import art.tattoo.wowtattoo.entity.MasterEntity;
 import art.tattoo.wowtattoo.exeption.MasterNotFoundException;
 import art.tattoo.wowtattoo.mapping.MasterMapper;
@@ -58,5 +59,22 @@ public class MasterPageController {
                     .toDto(masterRepository
                             .save(entity));
             return ResponseEntity.ok(masterDto);
+    }
+
+    @PutMapping("/master/{id}")
+    public ResponseEntity<?> updateMaster(@PathVariable long id,
+                                           @Valid
+                                           @RequestBody MasterEntity entity){
+        MasterEntity masterEntity = masterRepository.findById(id).get();
+        try {
+            if (masterEntity.getId() == null) {
+                throw new MasterNotFoundException("Ошибка, пользолватель с id = '" + id + "' отсутствует в базе");
+            }
+            return ResponseEntity.ok(masterMapper
+                    .toDto(masterRepository
+                            .save(entity)));
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e);
+        }
     }
 }
