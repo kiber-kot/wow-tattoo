@@ -5,6 +5,7 @@ import art.tattoo.wowtattoo.entity.ReviewEntity;
 import art.tattoo.wowtattoo.entity.UserEntity;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class ReviewDto {
 
     private Long id;
 
+    @JsonProperty(value = "sentId")
     private Long userId;
 
     private Long masterId;

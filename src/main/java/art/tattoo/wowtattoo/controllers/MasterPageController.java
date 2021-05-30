@@ -39,21 +39,24 @@ public class MasterPageController {
     }
 
     @GetMapping("/master/{id}")
-    public MasterDto getOneMaster(@PathVariable long id){
-        MasterDto masterDto = new MasterDto();
+    public ResponseEntity<?> getOneMaster(@PathVariable long id){
+        MasterDto masterDto;
         try {
+            if(masterRepository.findById(id).isEmpty()){
+                throw new MasterNotFoundException("Ошибка, пользолватель с id = '"+ id + "' отсутствует в базе");
+            }
             masterDto = masterService.getMaster(id);
-            return masterDto;
-        }  catch (Exception e){
-            return masterDto;
+            return ResponseEntity.ok(masterDto);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PostMapping("/master")
     public ResponseEntity<MasterDto> saveMaster(@Valid @RequestBody MasterEntity entity){
-        MasterDto masterDto = masterMapper
-                .toDto(masterRepository
-                        .save(entity));
-        return ResponseEntity.ok(masterDto);
+            MasterDto masterDto = masterMapper
+                    .toDto(masterRepository
+                            .save(entity));
+            return ResponseEntity.ok(masterDto);
     }
 }
