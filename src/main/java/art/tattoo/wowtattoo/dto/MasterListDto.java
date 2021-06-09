@@ -18,6 +18,10 @@ public class MasterListDto {
 
     private String avatar;
 
+    private String city;
+
+    private String minPrice;
+
     private RatingDto rating;
 
     private List<PortfolioDto> portfolio;
