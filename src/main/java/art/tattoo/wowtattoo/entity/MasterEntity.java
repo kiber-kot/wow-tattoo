@@ -27,7 +27,7 @@ public class MasterEntity {
     @NotBlank
     private String masterName;
 
-    @Max(5000)
+    @Column(length = 5000)
     private String description;
 
     @Min(1)
