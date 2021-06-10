@@ -1,12 +1,9 @@
 package art.tattoo.wowtattoo.service;
 
-import art.tattoo.wowtattoo.dao.MasterListRepository;
 import art.tattoo.wowtattoo.dto.MasterListDto;
 import art.tattoo.wowtattoo.entity.MasterEntity;
 import art.tattoo.wowtattoo.mapping.MasterListMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,36 +22,13 @@ public class MasterListService {
     private EntityManager entityManager;
 
     public List<MasterListDto> getDefaultMasterList(List<String> city,
-                                             List<Integer> experience,
-                                             List<Integer> price){
+                                                    List<Integer> experience,
+                                                    List<Integer> price){
         String baseSql = "SELECT * FROM master WHERE";
-        if(city != null){
-            for(String value: city){
-                if(baseSql.substring(21).equals("WHERE")){
-                    baseSql = baseSql + " city = "  + "'" + value + "'";
-                }else {
-                    baseSql = baseSql + " AND city = " + "'" + value + "'";
-                }
-            }
-        }
-        if(experience != null){
-            for(Integer value : experience){
-                if(baseSql.substring(20).equals("WHERE")){
-                    baseSql = baseSql + " experience = " + "'" + value + "'";
-                }else {
-                    baseSql = baseSql + " AND experience = " + "'" + value + "'";
-                }
-            }
-        }
-        if(price != null){
-            for(Integer value : price){
-                if(baseSql.substring(20).equals("WHERE")){
-                    baseSql = baseSql + " price = " + "'" + value + "'";
-                }else {
-                    baseSql = baseSql + " AND price = " + "'" + value + "'";
-                }
-            }
-        }
+
+        baseSql = generatorFilterSql(baseSql, city, "city");
+        baseSql = generatorFilterSql(baseSql, experience,"experience");
+        baseSql = generatorFilterSql(baseSql, price, "price");
 
         String filterSql = " ORDER BY id ASC limit 10";
 
@@ -72,33 +46,10 @@ public class MasterListService {
                                                     List<Integer> experience,
                                                     List<Integer> price){
         String baseSql = "SELECT * FROM master WHERE";
-        if(city != null){
-            for(String value: city){
-                if(baseSql.substring(21).equals("WHERE")){
-                    baseSql = baseSql + " city = "  + "'" + value + "'";
-                }else {
-                    baseSql = baseSql + " AND city = " + "'" + value + "'";
-                }
-            }
-        }
-        if(experience != null){
-            for(Integer value : experience){
-                if(baseSql.substring(20).equals("WHERE")){
-                    baseSql = baseSql + " experience = " + "'" + value + "'";
-                }else {
-                    baseSql = baseSql + " AND experience = " + "'" + value + "'";
-                }
-            }
-        }
-        if(price != null){
-            for(Integer value : price){
-                if(baseSql.substring(20).equals("WHERE")){
-                    baseSql = baseSql + " price = " + "'" + value + "'";
-                }else {
-                    baseSql = baseSql + " AND price = " + "'" + value + "'";
-                }
-            }
-        }
+
+        baseSql = generatorFilterSql(baseSql, city, "city");
+        baseSql = generatorFilterSql(baseSql, experience,"experience");
+        baseSql = generatorFilterSql(baseSql, price, "price");
 
         String filterSql = " AND id > " + id + " ORDER BY id ASC limit 10 ";
 
@@ -108,5 +59,46 @@ public class MasterListService {
         masterListMapper.toTdoList(masterEntity);
 
         return masterListMapper.toTdoList(masterEntity);
+    }
+
+    private String generatorFilterSql(String sql, List<?> list, String columnType){
+        if(list != null) {
+            if (!columnType.equals("style")) {
+                for (Object value : list) {
+                    if (sql.substring(21).equals("WHERE")) {
+                        sql = sql + " " + columnType + " = " + "'" + value + "'";
+                    } else {
+                        sql = sql + " AND " + columnType + " = " + "'" + value + "'";
+                    }
+                }
+                return sql;
+            } else {
+                StringBuilder mainSQL = new StringBuilder(sql);
+                mainSQL.insert(20, "RIGHT JOIN syle ON master.id = style.master_id");
+                for(Object value : list) {
+                    if (sql.substring(21).equals("WHERE")) {
+                        String sqlJoinStyle = "RIGHT JOIN syle ON master.id = style.master_id";
+                        sql = sql + " " + columnType + " = " + "'" + value + "'";
+                    } else {
+                        sql = sql + " AND " + columnType + " = " + "'" + value + "'";
+                    }
+                }
+            }
+        }
+        return sql;
+    }
+
+    private String generatorFilterStyleSql(String sql, List<?> list){
+        if(list != null){
+            for(Object value: list){
+                if(sql.substring(21).equals("WHERE")){
+                    sql = sql + " city = "  + "'" + value + "'";
+                }else {
+                    sql = sql + " AND city = " + "'" + value + "'";
+                }
+            }
+            return sql;
+        }
+        return sql;
     }
 }
