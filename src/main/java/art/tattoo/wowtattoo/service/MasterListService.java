@@ -70,7 +70,10 @@ public class MasterListService {
                         int index = sql.indexOf("WHERE");
                         if (sql.substring(index).equals("WHERE")) {
                             sql = sql + " " + columnType + " in('" + value + "'";
-                        } else {
+                        }else if(!sql.contains("city in(")){
+                            sql = sql + " AND city in('" + value + "'";
+                        }
+                        else {
                             sql = sql + " , " + value + "'";
                         }
                     }
@@ -101,22 +104,8 @@ public class MasterListService {
                         }
                     }
                 }
-
             }
         }
         return sql;
     }
 }
-
-//            if (!columnType.equals("style")) {
-//                if (columnType.equals("city")) {
-//                    for (Object value : list) {
-//                        int index = sql.indexOf("WHERE");
-//                        if (sql.substring(index).equals("WHERE")) {
-//                            sql = sql + " " + columnType + " = " + "'" + value + "'";
-//                        } else {
-//                            sql = sql + " OR " + columnType + " = " + "'" + value + "'";
-//                        }
-//                    }
-//                    return sql;
-//                }
