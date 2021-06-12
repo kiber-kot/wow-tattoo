@@ -22,6 +22,10 @@ public class MasterDto {
 
     private String avatar;
 
+    private String city;
+
+    private int minPrice;
+
     private RatingDto rating;
 
     private List<ReviewDto> reviews;

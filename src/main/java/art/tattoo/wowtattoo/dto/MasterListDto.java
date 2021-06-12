@@ -20,11 +20,7 @@ public class MasterListDto {
 
     private String city;
 
-    private String minPrice;
-
-    private RatingDto rating;
-
-    private List<PortfolioDto> portfolio;
+    private int minPrice;
 
     private List<StyleDto> style;
 }

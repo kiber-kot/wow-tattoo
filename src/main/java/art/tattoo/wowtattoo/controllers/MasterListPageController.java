@@ -57,7 +57,9 @@ public class MasterListPageController {
             @PathVariable("id") long id,
             @RequestParam(name = "city", required = false) List<String> city,
             @RequestParam(name = "experience", required = false) List<Integer> experience,
-            @RequestParam(name = "price", required = false) List<Integer> price){
+            @RequestParam(name = "price", required = false) List<Integer> price,
+            @RequestParam(name = "style", required = false) List<Integer> style
+    ){
 
         return ResponseEntity.ok().body(masterListService.getLimitByIdMasterList(id,city,experience,price));
     }

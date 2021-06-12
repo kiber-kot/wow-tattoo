@@ -38,7 +38,7 @@ public class MasterEntity {
 
     private String city;
 
-    private String minPrice;
+    private int minPrice;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "masterId")
     private RatingEntity rating;
