@@ -69,36 +69,54 @@ public class MasterListService {
                     for (Object value : list) {
                         int index = sql.indexOf("WHERE");
                         if (sql.substring(index).equals("WHERE")) {
-                            sql = sql + " " + columnType + " = " + "'" + value + "'";
+                            sql = sql + " " + columnType + " in('" + value + "'";
                         } else {
-                            sql = sql + " OR " + columnType + " = " + "'" + value + "'";
+                            sql = sql + " , " + value + "'";
                         }
                     }
-                    return sql;
-                } else if(columnType.equals("experience") || columnType.equals("min_price")){
+                    return sql +") ";
+                } else if(columnType.equals("min_price")){
                     for (Object value : list) {
                         int index = sql.indexOf("WHERE");
                         if (sql.substring(index).equals("WHERE")) {
-                            sql = sql + " " + columnType + " = "  + value;
-                        } else {
-                            sql = sql + " OR " + columnType + " = " + value;
+                            sql = sql + " " + columnType + " in(" + value;
+                        } else if(!sql.contains("min_price in(")){
+                            sql = sql + " AND min_price in(" + value;
+                        }
+                        else {
+                            sql = sql + " , " + value;
+                        }
+                    }
+                    return sql +") ";
+                } else if(columnType.equals("experience")){
+                    for (Object value : list) {
+                        int index = sql.indexOf("WHERE");
+                        if (sql.substring(index).equals("WHERE")) {
+                            sql = sql + " " + columnType + " in(" + value;
+                        } else if(!sql.contains("experience in(")){
+                            sql = sql + " AND experience in(" + value;
+                        }
+                        else {
+                            sql = sql + " , " + value;
                         }
                     }
                 }
 
-            } else {
-                StringBuffer mainSQL = new StringBuffer(sql);
-                mainSQL.insert(20, "RIGHT JOIN syle ON master.id = style.master_id");
-                for (Object value : list) {
-                    if (sql.substring(21).equals("WHERE")) {
-                        String sqlJoinStyle = "RIGHT JOIN syle ON master.id = style.master_id";
-                        sql = sql + " " + columnType + " = " + "'" + value + "'";
-                    } else {
-                        sql = sql + " AND " + columnType + " = " + "'" + value + "'";
-                    }
-                }
             }
         }
         return sql;
     }
 }
+
+//            if (!columnType.equals("style")) {
+//                if (columnType.equals("city")) {
+//                    for (Object value : list) {
+//                        int index = sql.indexOf("WHERE");
+//                        if (sql.substring(index).equals("WHERE")) {
+//                            sql = sql + " " + columnType + " = " + "'" + value + "'";
+//                        } else {
+//                            sql = sql + " OR " + columnType + " = " + "'" + value + "'";
+//                        }
+//                    }
+//                    return sql;
+//                }
