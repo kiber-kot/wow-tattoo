@@ -32,6 +32,7 @@ public class MasterEntity {
 
     @Min(1)
     @Max(99)
+    @NotBlank
     private int experience;
 
     private String avatar;
