@@ -6,8 +6,10 @@ import art.tattoo.wowtattoo.dto.MasterDto;
 import art.tattoo.wowtattoo.entity.ContactEntity;
 import art.tattoo.wowtattoo.entity.MasterEntity;
 import art.tattoo.wowtattoo.exeption.MasterNotFoundException;
+import art.tattoo.wowtattoo.exeption.RequiredFieldIsNotFilledInException;
 import art.tattoo.wowtattoo.mapping.MasterMapper;
 import art.tattoo.wowtattoo.service.MasterService;
+import art.tattoo.wowtattoo.service.MasterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,8 @@ public class MasterPageController {
     private MasterRepository masterRepository;
     @Autowired
     private MasterMapper masterMapper;
+    @Autowired
+    private MasterServiceImpl masterServiceIml;
 
 
     @GetMapping("/status")
@@ -55,11 +59,12 @@ public class MasterPageController {
     }
 
     @PostMapping("/master")
-    public ResponseEntity<MasterDto> saveMaster(@Valid @RequestBody MasterEntity entity){
-            MasterDto masterDto = masterMapper
-                    .toDto(masterRepository
-                            .save(entity));
-            return ResponseEntity.ok(masterDto);
+    public ResponseEntity<?> saveMaster(@Valid @RequestBody MasterEntity entity){
+        try {
+            return ResponseEntity.ok(masterServiceIml.saveMaster(entity));
+        } catch (MasterNotFoundException | RequiredFieldIsNotFilledInException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/master/{id}")

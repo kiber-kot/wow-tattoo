@@ -4,14 +4,17 @@ import art.tattoo.wowtattoo.dao.MasterRepository;
 import art.tattoo.wowtattoo.dto.MasterDto;
 import art.tattoo.wowtattoo.entity.MasterEntity;
 import art.tattoo.wowtattoo.exeption.MasterNotFoundException;
+import art.tattoo.wowtattoo.exeption.RequiredFieldIsNotFilledInException;
 import art.tattoo.wowtattoo.mapping.MasterMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class MasterServiceImpl implements MasterService {
 
     private final MasterRepository masterRepository;
@@ -41,12 +44,24 @@ public class MasterServiceImpl implements MasterService {
     }
 
     @Override
-    public MasterDto saveMaster(MasterEntity masterEntity) throws MasterNotFoundException {
-        if(masterRepository.findById(masterEntity.getId()).isEmpty()){
-            throw new MasterNotFoundException("Мастер не найден");
+    public MasterDto saveMaster(MasterEntity masterEntity) throws MasterNotFoundException, RequiredFieldIsNotFilledInException {
+
+        if(masterEntity.getMasterName().isEmpty() || masterEntity.getMasterName() == null){
+            throw new RequiredFieldIsNotFilledInException("Отсутствует обязательное поле masterName");
         }
-        masterEntity = masterRepository.save(masterEntity);
-        MasterDto masterDto = masterMapper.toDto(masterEntity);
+        if(masterEntity.getCity().isEmpty() || masterEntity.getCity() == null){
+            throw new RequiredFieldIsNotFilledInException("Отсутствует обязательное поле city");
+        }
+        if(masterEntity.getMinPrice() == 0){
+            throw new RequiredFieldIsNotFilledInException("Отсутствует обязательное поле minPrice");
+        }
+        if(masterEntity.getExperience() == 0 || masterEntity.getExperience() >= 100){
+            throw new RequiredFieldIsNotFilledInException("Отсутствует обязательное поле experience или значение данного поля не входит в отрезок 1-99");
+        }
+
+        MasterDto masterDto = masterMapper
+                .toDto(masterRepository
+                        .save(masterEntity));
         return masterDto;
     }
 }
