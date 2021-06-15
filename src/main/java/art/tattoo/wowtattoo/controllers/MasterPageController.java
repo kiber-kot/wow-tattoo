@@ -67,20 +67,17 @@ public class MasterPageController {
         }
     }
 
-    @PutMapping("/master/{id}")
-    public ResponseEntity<?> updateMaster(@PathVariable long id,
-                                           @Valid
-                                           @RequestBody MasterEntity entity){
-        MasterEntity masterEntity = masterRepository.findById(id).get();
+    @PutMapping("/master")
+    public ResponseEntity<?> updateMaster(@Valid @RequestBody MasterEntity entity){
         try {
-            if (masterEntity.getId() == null) {
-                throw new MasterNotFoundException("Ошибка, пользолватель с id = '" + id + "' отсутствует в базе");
+            if (masterRepository.findById(entity.getId()).isEmpty()) {
+                throw new MasterNotFoundException("Ошибка, пользолватель с id = '" + entity.getId() + "' отсутствует в базе");
             }
             return ResponseEntity.ok(masterMapper
                     .toDto(masterRepository
-                            .save(entity)));
+                            .saveAndFlush(entity)));
         } catch (Exception e){
-            return ResponseEntity.badRequest().body(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

@@ -42,17 +42,6 @@ public class PortfolioPageController {
         return ResponseEntity.ok().body("Записы добавлены");
     }
 
-//    @PutMapping("/portfolio/{id}")
-//    public PortfolioDto updatePortfolio(@PathVariable long id,
-//                                    @Valid
-//                                    @RequestBody PortfolioEntity entity){
-//        MasterEntity masterEntity = masterRepository.findById(id).get();
-//            entity.setMasterId(masterEntity);
-//            return portfolioMapper
-//                    .toDto(portfolioRepository
-//                            .save(entity));
-//    }
-
     @PutMapping("/portfolio/{id}")
     public ResponseEntity<?> updatePortfolio(@PathVariable long id,
                                            @Valid
