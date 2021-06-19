@@ -52,10 +52,7 @@ public class MasterServiceImpl implements MasterService {
         if(masterEntity.getCity().isEmpty() || masterEntity.getCity() == null){
             throw new RequiredFieldIsNotFilledInException("Отсутствует обязательное поле city");
         }
-        if(masterEntity.getMinPrice() == 0){
-            throw new RequiredFieldIsNotFilledInException("Отсутствует обязательное поле minPrice");
-        }
-        if(masterEntity.getExperience() == 0 || masterEntity.getExperience() >= 100){
+        if(masterEntity.getExperience() <= 0 || masterEntity.getExperience() >= 100){
             throw new RequiredFieldIsNotFilledInException("Отсутствует обязательное поле experience или значение данного поля не входит в отрезок 1-99");
         }
 

@@ -31,15 +31,22 @@ public class PortfolioPageController {
 
 
     @PostMapping("/portfolio/{id}")
-    public ResponseEntity savePortfolio(@PathVariable long id,
+    public ResponseEntity<?> savePortfolio(@PathVariable long id,
                                         @Valid
                                         @RequestBody List<PortfolioEntity> entity){
-        MasterEntity masterEntity = masterRepository.findById(id).get();
-        for(PortfolioEntity value: entity){
-            value.setMasterId(masterEntity);
+        Optional<MasterEntity> masterEntity = masterRepository.findById(id);
+        try {
+            if (masterEntity.isEmpty()) {
+                throw new MasterNotFoundException("Ошибка, пользолватель с id = '" + id + "' отсутствует в базе");
+            }
+            for (PortfolioEntity value : entity) {
+                value.setMasterId(masterEntity.get());
+            }
+            portfolioRepository.saveAll(entity);
+            return ResponseEntity.ok().body("Записы добавлены");
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        portfolioRepository.saveAll(entity);
-        return ResponseEntity.ok().body("Записы добавлены");
     }
 
     @PutMapping("/portfolio/{id}")
